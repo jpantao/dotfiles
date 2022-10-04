@@ -1,0 +1,119 @@
+{
+    "height": 10, 
+    "spacing": 2, 
+    "modules-left": [
+        "custom/launcher",
+        "custom/separator",
+        "sway/workspaces",
+        "custom/separator",
+        "temperature",
+        "custom/separator",
+        "sway/window"        
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "network",
+        "custom/separator",
+        "pulseaudio",
+        "custom/separator",
+        "backlight",
+        "custom/separator",
+        "cpu",
+        "custom/separator",
+        "memory",
+        "custom/separator",
+        "battery",
+        "tray"
+    ],
+    "custom/separator": {
+        "format": "|",
+        "interval": "once",
+        "tooltip": false
+    },
+    "custom/launcher": {
+        "format": "",
+        "on-click": "rofi -show drun",
+        "tooltip": false
+    },
+    "temperature": {
+        "format": " {temperatureC}°C",
+        "critical-threshold": 80
+    },
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 50,
+        "rewrite": {
+           "(.*)Mozilla Firefox": " $0",
+           "(.*) - Chromium": " $1",
+           "nvim(.*)": " $0",
+           "jpantao(.*)": " $0"
+        }
+    },
+    "clock": {
+        "interval": 60,
+        "tooltip-format": "{:%A, %d %B %Y}\n\n<tt>{calendar}</tt>",
+        "format": "<span foreground='#7dcfff'></span> {:%d %B %Y - %H:%M}"
+    },
+    "network": {
+        "interval": 1,
+        "format-wifi": "說 {essid} ({ipaddr})",
+        "format-ethernet": "  {ifname} ({ipaddr})",
+        "format-linked": "說 {essid} (No IP)",
+        "format-disconnected": "說 Disconnected",
+        "tooltip": false
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "format": "{icon} {percent}%",
+        "format-icons": ["","","",""]
+    },
+    "pulseaudio": {
+        "scroll-step": 1,
+        "format": "{icon} {volume}%", 
+        "format-muted": "婢 Muted",
+        "format-icons": {
+          "default": ["", "", ""]
+        },
+        "states": {
+          "warning": 85
+        },
+        "scroll-step": 1,
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "tooltip": false
+    },
+    "disk": {
+        "interval": 18000,
+        "format": "﫭 {percentage_used}%",
+        "tooltip-format": "{used} used out of {total} on {path}"
+    },
+    "cpu": {
+        "interval": 1,
+        "format": " {usage}%"
+    },
+    "memory": {
+        "interval": 300,
+        "format": "﬙ {percentage}%",
+        "tooltip-format": "{used:0.2f}GiB used out of {total:0.2f}GiB"
+    },
+    "battery": {
+        "interval": 10,
+        "states": {
+          "warning": 20,
+          "critical": 10
+        },
+        "format": "{icon} {capacity}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "format-full": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "tooltip": false
+    },
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10
+    }
+}
+

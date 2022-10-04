@@ -1,0 +1,316 @@
+#+TITLE:  Emacs config
+#+AUTHOR: João Antão
+#+EMAIL:  jp.antao@campus.fct.unl.pt
+#+DESCRIPTION: emacs configuration.
+#+LANGUAGE: en
+
+#+OPTIONS: num:nil
+#+PROPERTY: header-args :results silent
+
+Emacs configuration in [[https://en.wikipedia.org/wiki/Literate_programming][literate]] programming using Emacs' [[https://orgmode.org/][org-mode]].
+
+* Startup
+  Some processes are required for the rest of the configuration and have to run first.
+** Making startup faster
+   #+NAME: faster-startup
+   #+BEGIN_SRC emacs-lisp
+	 (setq package-enable-at-startup nil
+		   message-log-max 16384
+		   gc-cons-threshold 402653184
+		   gc-cons-percentage 0.6
+		   auto-window-vscroll nil
+		   package--init-file-ensured t)
+
+	 (add-hook 'after-init-hook
+			   `(lambda ()
+				  (setq gc-cons-threshold 800000
+						gc-cons-percentage 0.1)) t)
+   #+END_SRC
+
+** Package Archives
+   Add package archives:
+   #+NAME: package-archives
+   #+BEGIN_SRC emacs-lisp
+     (unless (assoc-default "melpa" package-archives)
+       (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+   #+END_SRC
+
+** Bootstrap use-package
+   The use-package macro allows you to isolate package configuration
+   in your .emacs file in a way that is both performance-oriented
+   and, well, tidy.
+   #+NAME: use-package
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+     (require 'use-package)
+     (require 'use-package-ensure)
+     (setq use-package-always-ensure t)
+
+	 ;; diminish utilitie
+	 (use-package diminish)
+   #+END_SRC
+
+* Preferences
+  Look and feel tweaks.
+** GUI
+   - Inhibit startup screen.
+     #+NAME: inhibit-startup-screen
+     #+BEGIN_SRC emacs-lisp
+       (setq inhibit-startup-screen t)
+     #+END_SRC
+
+   - Disable the bars.
+     #+NAME: disable-bars
+     #+BEGIN_SRC emacs-lisp
+       (menu-bar-mode -1)
+       (tool-bar-mode -1)
+       (scroll-bar-mode -1)
+     #+END_SRC
+
+   - Disable ring bell.
+     #+NAME: disable-bell
+     #+BEGIN_SRC emacs-lisp
+       (setq ring-bell-function 'ignore)
+     #+END_SRC
+
+** Themes
+   Emacs theme.
+   #+NAME: theme
+   #+BEGIN_SRC emacs-lisp
+		 (use-package nord-theme
+		  :config
+		   (load-theme 'nord t))
+   #+END_SRC
+
+** Fonts
+   Font settings.
+   #+NAME: fonts
+   #+BEGIN_SRC emacs-lisp
+     (set-frame-font "Hack 12" nil t)
+   #+END_SRC
+
+** Other
+   - Line numbers.
+     #+NAME: org-bullets
+     #+BEGIN_SRC emacs-lisp
+       (global-display-line-numbers-mode)
+     #+END_SRC
+
+   - Use tabs for indentation.
+     #+NAME: tabs
+     #+BEGIN_SRC emacs-lisp
+       (setq-default indent-tabs-mode t)
+       (setq-default tab-width 4)
+       (defvaralias 'c-basic-offset 'tab-width)
+     #+END_SRC
+
+   - Highlight current line.
+     #+NAME: hl-line-mode
+     #+BEGIN_SRC emacs-lisp
+     (global-hl-line-mode t)
+     #+END_SRC
+
+   - Highlight matcing paren.
+     #+NAME: show-paren-mode
+     #+BEGIN_SRC emacs-lisp
+       (show-paren-mode t)
+     #+END_SRC
+
+   - Kill line kills the whole line including the new line char.
+     #+NAME: kill-whole-line
+     #+BEGIN_SRC emacs-lisp
+       (setq kill-whole-line t)
+     #+END_SRC
+
+   - Change (yes or no) no (y or n)
+     #+NAME: y-or-n
+     #+BEGIN_SRC emacs-lisp
+       (defalias 'yes-or-no-p 'y-or-n-p)
+     #+END_SRC
+
+   - Don't ask when following symlinks.
+     #+NAME: symlink-prompt
+     #+BEGIN_SRC emacs-lisp
+       (setq vc-follow-symlinks t)
+     #+END_SRC
+
+   - Fix scrolling
+     #+NAME: scrolling
+     #+BEGIN_SRC emacs-lisp
+       (setq mouse-wheel-scroll-amount '(2)
+         mouse-wheel-progressive-speed nil
+         scroll-conservatively 101)
+     #+END_SRC
+
+   - Remove trailing whitespaces.
+     #+NAME: remove-trailing-whitespaces
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'before-save-hook 'delete-trailing-whitespace)
+     #+END_SRC
+
+   - Stop backup noise by setting a backup directory.
+     #+NAME: backup-directory
+     #+BEGIN_SRC emacs-lisp
+	   (setq backup-directory-alist `(("." . "~/.saves"))
+		 backup-by-copying t
+		 delete-old-versions t
+		 kept-new-versions 8
+		 kept-old-versions 8
+		 version-control t
+		 auto-save-list-file-prefix nil)
+     #+END_SRC
+
+     - Stop Emacs fromwriting in init.el
+       #+NAME: clean-init
+       #+BEGIN_SRC emacs-lisp
+         (setq custom-file (make-temp-file "emacs-custom"))
+       #+END_SRC
+
+* Packages & Configuration
+  All the packages used and respective configurations as listed in this section.
+** Core
+   Base packages.
+*** which-key
+	Keybindings helper.
+    #+NAME: which-key
+    #+BEGIN_SRC emacs-lisp
+	  (use-package which-key
+		:diminish which-key-mode
+		:config (which-key-mode))
+    #+END_SRC
+*** undo-tree
+
+	Instead of treating undo/redo as a linear sequence of changes, undo-tree-mode treats undo history as a branching tree of changes.
+    #+NAME: undo-tree
+    #+BEGIN_SRC emacs-lisp
+	  (use-package undo-tree
+		:diminish undo-tree-mode
+		:bind ("C-x u" . undo-tree-visualize)
+		:config
+		(progn
+		  (global-undo-tree-mode)
+		  (setq undo-tree-visualizer-timestamps t)
+		  (setq undo-tree-visualizer-diff t)))
+    #+END_SRC
+*** expand-region
+	Expand region increases the selected region by semantic units. Just keep pressing the key until it selects what you want.
+    #+NAME: expand-region
+    #+BEGIN_SRC emacs-lisp
+	  (use-package expand-region
+		:bind ("C-+" . er/expand-region))
+    #+END_SRC
+*** winner-mode
+    Winner Mode is a global minor mode. When activated, it allows you to “undo” (and “redo”)
+    changes in the window configuration with the key commands ‘C-c left’ and ‘C-c right’.
+    #+NAME: winner-mode
+    #+BEGIN_SRC emacs-lisp
+	  (use-package winner
+		:diminish winner-mode
+		:config
+		(winner-mode 1))
+    #+END_SRC
+*** ivy
+	Ivy, a generic completion mechanism for Emacs.
+    #+NAME: ivy-mode
+    #+BEGIN_SRC emacs-lisp
+	  (use-package ivy
+		:diminish ivy-mode
+		:bind (("C-x b" . ivy-switch-buffer)
+			   ("C-c v" . ivy-push-view)
+			   ("C-c V" . ivy-pop-view))
+		:config
+		(ivy-mode 1))
+
+	  ;; recomended settings
+	  (setq ivy-use-virtual-buffers t)
+	  (setq ivy-count-format "(%d/%d) ")
+
+	  ;; ignore regex tokens order
+	  (setq ivy-re-builders-alist
+			'((t . ivy--regex-ignore-order)))
+    #+END_SRC
+*** avy
+	avy is a GNU Emacs package for jumping to visible text using a char-based decision tree.
+    #+NAME: avy
+    #+BEGIN_SRC emacs-lisp
+	(use-package avy
+		:bind ("C-." . avy-goto-char))
+    #+END_SRC
+
+*** swiper
+	Swiper, an Ivy-enhanced alternative to isearch.
+    #+NAME: swiper
+    #+BEGIN_SRC emacs-lisp
+	  (use-package swiper
+		:bind ("M-s" . swiper))
+    #+END_SRC
+*** counsel
+	Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+    #+NAME: counsel
+    #+BEGIN_SRC emacs-lisp
+	  (use-package counsel
+		:bind (("M-x" . counsel-M-X)
+			   ("M-x" . counsel-M-x)
+			   ("C-x C-f" . counsel-find-file)
+			   ("C-x y" . counsel-yank-pop)
+			   ("<f1> f" . counsel-describe-function)
+			   ("<f1> v" . counsel-describe-variable)
+			   ("<f1> l" . counsel-find-library)
+			   ("<f2> i" . counsel-info-lookup-symbol)
+			   ("<f2> u" . counsel-unicode-char)
+			   ("<f2> j" . counsel-set-variable))
+		:config
+		;; remove the ^ from the default regex
+		(setq-default ivy-initial-inputs-alist nil))
+    #+END_SRC
+
+*** smart-mode-line
+	Smart Mode Line is a sexy mode-line for Emacs. It aims to be easy to read from small to large monitors by using colors, a prefix feature, and smart truncation.
+    #+NAME: smart-mode-line
+    #+BEGIN_SRC emacs-lisp
+	  (use-package smart-mode-line
+		:config
+		(setq sml/no-confirm-load-theme t)
+		(setq sml/theme 'respectful)
+		(sml/setup))
+    #+END_SRC
+
+** Org
+   Org-mode is a document editing, formatting, and organizing mode, designed for notes, planning, and authoring within the free software text editor Emacs.
+   This file is written in org-mode.
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     ;; org package configuration
+     (use-package org
+       :hook #'org-indent-mode
+       :init
+       (setq org-log-done 'time
+             org-src-window-setup 'current-window
+             org-todo-keywords '((sequence "TODO(t)" "SOMEDAY(s)" "NEXT(n)" "|")
+                                 (sequence "WORKING(w!)" "BLOCKED(B@)" "|")
+                                 (sequence "REPORT(r)" "BUG(b)" "KNOWN(k)" "|" "FIXED(f!)")
+                                 (sequence "|" "DONE(d)" "CANCEL(c@)")
+                                 (sequence "|" "STUDY(y!)")))
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((org . t)
+          (C . t)
+          (latex . t)
+          (emacs-lisp . t)
+          (sql . t)
+          (shell . t)
+          (python . t))))
+
+     ;; org-bullets
+     (use-package org-bullets
+       :config
+       (setq org-bullets-bullet-list '("∙"))
+       (add-hook 'org-mode-hook 'org-bullets-mode))
+
+     ;; change also org elipsis
+     (setq org-ellipsis " ▼")
+
+
+   #+END_SRC

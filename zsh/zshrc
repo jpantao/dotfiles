@@ -1,0 +1,27 @@
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Theme
+ZSH_THEME="gentoo"
+
+plugins=(
+    git
+    tmux
+    fzf
+    extract
+    colored-man-pages
+#    zsh-syntax-highlighting
+    zsh-autosuggestions
+)
+
+source $ZSH/oh-my-zsh.sh
+
+alias vim="nvim"
+alias zshconfig="nvim ~/.zshrc"
+alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias emacs="emacs --no-window-system"      
+
+
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+    exec startx
+fi
