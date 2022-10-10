@@ -6,5 +6,3 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ln -sf zsh/zshrc_minimal ${HOME}/.zshrc
 ln -sf tmux/tmux.conf ${HOME}/.tmux.conf
 
-ln -sf tmux ${config}/tmux
-ln -sf emacs ${config}/emacs
