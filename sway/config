@@ -50,14 +50,12 @@ client.background        #242424
 exec_always --no-startup-id  nm-applet --indicator &
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id mako
+exec_always --no-startup-id autotiling
 bar swaybar_command waybar
 
 
-# Monitors
+# Wallpaper
 output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output eDP-1 mode 1920x1080@60.033Hz position 320 1440
-output DP-2 mode 2560x1440@59.951Hz position 0 0
-output DP-1 mode 2560x1440@59.951Hz position 1920 0
 
 
 input "1:1:AT_Translated_Set_2_keyboard" {
@@ -74,7 +72,6 @@ input "1739:30383:DELL08AF:00_06CB:76AF_Touchpad" {
     natural_scroll enabled
     middle_emulation enabled
 }
-
 
 
 ### Key bindings
