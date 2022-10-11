@@ -8,9 +8,16 @@ set $menu rofi -show drun
 
 # TESTING 
 
+for_window [app_id="zoom"]              floating enable
+for_window [app_id="pavucontrol"]       floating enable
+for_window [app_id="pavucontrol"]       resize set height 540
+for_window [app_id="pavucontrol"]       resize set width 960
 for_window [app_id="blueman-manager"]   floating enable
 for_window [app_id="blueman-manager"]   resize set height 540
 for_window [app_id="blueman-manager"]   resize set width 960
+for_window [app_id="termfloat"]         floating enable
+for_window [app_id="termfloat"]         resize set height 540
+for_window [app_id="termfloat"]         resize set width 960
 
 default_border none
 
@@ -51,12 +58,12 @@ exec_always --no-startup-id  nm-applet --indicator &
 exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id mako
 exec_always --no-startup-id autotiling
+exec_always --no-startup-id kanshi
 bar swaybar_command waybar
 
 
 # Wallpaper
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-
+output * bg ~/Pictures/wallpapers/jrmi1dzwvw291.png fill
 
 input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_layout pt
@@ -77,6 +84,7 @@ input "1739:30383:DELL08AF:00_06CB:76AF_Touchpad" {
 ### Key bindings
 
 bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec kitty --class="termfloat"
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 

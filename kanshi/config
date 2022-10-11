@@ -1,0 +1,12 @@
+profile {
+	
+	output eDP-1 mode 1920x1080@60.0Hz position 0,1080
+	output "BenQ Corporation BenQ GW2480 G6J0013601Q" mode 1920x1080@60.0Hz position 0,0
+
+}
+
+
+
+profile {
+	output eDP-1 mode 1920x1080@60.0Hz position 0,1080
+}

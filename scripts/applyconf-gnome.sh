@@ -8,3 +8,5 @@ ln -sf zsh/zshrc_full ${HOME}/.zshrc
 ln -sf tmux/tmux.conf ${HOME}/.tmux.conf
 
 ln -sf emacs ${config}/emacs
+
+chsh -s $(which zsh)

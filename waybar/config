@@ -6,8 +6,6 @@
         "custom/separator",
         "sway/workspaces",
         "custom/separator",
-        "temperature",
-        "custom/separator",
         "sway/window"        
     ],
     "modules-center": [
@@ -83,6 +81,7 @@
         },
         "scroll-step": 1,
         "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
         "tooltip": false
     },
     "disk": {
