@@ -23,5 +23,3 @@ else
 fi
 
 alias emacs="emacs --no-window-system"      
-alias ssh="kitty + kitten ssh"
-alias ssh="kitty + kitten ssh"

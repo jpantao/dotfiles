@@ -20,8 +20,8 @@
     border-bottom: 1px solid #414868;
     padding-top: 0px;
     padding-bottom: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   #workspaces button.focused {
     color: #c0caf5;
