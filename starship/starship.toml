@@ -12,5 +12,5 @@ disabled = false
 
 [hostname]
 ssh_only = false
-format = '[@$ssh_symbol$hostname](bold blue):
+format = '[@$ssh_symbol$hostname](bold blue):'
 disabled = false 
